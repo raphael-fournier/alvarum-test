@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  mariadb:
+    image: "mariadb:latest"
+    environment:
+      MYSQL_DATABASE: exercice
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3306:3306"
+    networks:
+      - network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent", "-u", "root", "-ppassword"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:4200"
+    networks:
+      - network
+    environment:
+      - VUE_APP_API_BASE_PATH=http://localhost:3000
+
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    networks:
+      - network
+    environment:
+      - DB_CONNECTION_URI=mariadb://root:password@mariadb:3306/exercice
+
+networks:
+  network:
+    driver: bridge

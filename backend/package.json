@@ -1,0 +1,46 @@
+{
+  "name": "event-app-backend",
+  "version": "1.0.0",
+  "description": "Backend of Event App",
+  "main": "server.js",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.21.1",
+    "body-parser": "^1.19.0",
+    "chalk": "^4.1.0",
+    "escape-html": "^1.0.3",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "express-basic-auth": "^1.2.0",
+    "express-jwt": "^6.0.0",
+    "feed": "^4.2.2",
+    "glob": "^7.1.6",
+    "he": "^1.2.0",
+    "mariadb": "^2.5.3",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "optionator": "^0.9.1",
+    "sequelize": "^7.0.0-alpha.3",
+    "umzug": "^2.3.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1"
+  },
+  "scripts": {
+    "start": "nodemon -r dotenv/config server.js --quiet --colors dotenv_config_path=.env.local",
+    "serve": "nodemon server.js --quiet",
+    "lint": "eslint .",
+    "fix": "eslint --fix ."
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  }
+}

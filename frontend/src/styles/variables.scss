@@ -1,0 +1,16 @@
+// src/sass/variables.scss
+
+$body-font-family: 'Raleway', sans-serif !default;
+$heading-font-family: 'Raleway', sans-serif !default;
+$font-size-root: 17px !default;
+
+$btn-font-weight: 800;
+
+$font-weights: ( 'thin': 300, 'light': 500, 'regular': 600, 'medium': 700, 'bold': 800, 'black': 900 );
+
+$btn-sizes: ( 'x-small': 24, 'small': 32, 'default': 40, 'large': 48, 'x-large': 56 );
+
+$btn-border-radius: 2rem;
+
+$dialog-margin: 8px !default;
+$dialog-max-height:	97% !default;
