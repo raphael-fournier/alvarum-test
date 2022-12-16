@@ -1,7 +1,7 @@
-FROM node:16
+FROM node:16-alpine
 
 EXPOSE 3000
-WORKDIR /usr/src/app
+WORKDIR /app
 COPY package*.json ./
 ENV NODE_ENV=production
 RUN npm install --only=production
