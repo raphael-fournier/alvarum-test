@@ -1,36 +1,47 @@
-# Vue & Node exercice
+# Alvarum test
 
-## Getting Started
+## Run the project
+
 
 ### Prequisites
-- Node.JS 16+
-- Mariadb Server (or Mysql Server), either [installed locally](https://mariadb.org/) or ran in a docker instance
+- [Docker engine](https://mariadb.org/)
 
-### Recommended Tools
-- Editor: Visual Studio Code with a vuejs extension (Vetur or Volar) and i18n Ally extensions
-- SQL Browser: HeidiSql or Dbeaver
-- (Optionnal) API Tester: Postman
+</br>
 
-### Create local database
-- Open a SQL Browser
-- Connect to your local server (by default 127.0.0.1:3306) with the root credentials (root and the password you set at installation time)
-- Create the database (name: exercice, encoding: utf8mb4_general_ci, Engine: InnoDB)
-
-### Backend Settings (Optionnal)
-Default settings can be overrided by creating a `backend/.env.local` file. Example:
+### With docker
 ```
-DB_CONNECTION_URI=mariadb://root:password@127.0.0.1:3306/exercice
-PORT=3000
+$ docker-compose up -d
 ```
 
-### Run backend
+This will start all the services needed to run the project:
+- mariadb (port 3306)
+- backend (port 3000)
+- frontend (port 8080)
+
+Open app in your browser: [http://localhost:8080/](http://localhost:8080/)
+
+Note: The frontend service entrypoint command may take a while to finish, the app won't be directly accessible even if the container is up and green.
+You can check the logs with `docker-compose logs -f frontend` to see when it's done. 
+
+</br>
+
+### Localy with node
+
+ - Install node 16
+
+#### Run db
+```
+docker-compose up -d mariadb
+```
+
+#### Run backend
 ```
 cd backend
 npm install
 npm start
 ```
 
-### Run frontend
+#### Run frontend
 ```
 cd frontend
 npm install
@@ -39,38 +50,33 @@ npm start
 
 Open app in your browser: [http://localhost:8080/](http://localhost:8080/)
 
-## App description
+</br>
 
-This app allow registered users to login to their event dashboard
+## Description
 
-The App is currently made of 2 screens:
+According to the exercise requierements, there is now a new form to login as a user using the last name and a registration number.
 
-- A login screen which allow registered users to connect
-- A Home screen which display currently logged-in user data
+Here are the credentials for the test users:
+- John Doe (registration number: 12345)
+- Jean Dupont (registration number: 123456)
+- Louis Dubois (registration number: 1234567)
+- Louise Morel (registration number: 12345678)
 
-Users can currently login using their phone number through the following workflow:
 
-- User enter his phone number
-- A random numeric code is generated and sent to the user by SMS (In this exercice **the message is not really sent but printed to the server console instead**)
-- User enter the code
+This is accessible at [http://localhost:8080/signin/registrationNumber](http://localhost:8080/signin/registrationNumber)
 
-Some test data is inserted at first run in order to ease testing:
+or directly from an http request to the new endpoint:
+```
+ $ curl --location --request POST 'http://localhost:3000/api/auth/loginWithRegistrationNumber' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "last_name": "dubois",
+    "registration_number": "1234567"
+}'
+```
 
-- John Doe (06 12 34 56 78)
-- Jean Dupont (06 00 00 00 00)
+## Notes
 
-## Tech stacks
+- I decided to split the two forms using differents routes (/signin/:type). I could also have used a query parameter (/signin?type=registrationNumber) and parse the url, or simply keep everything on the exact same route (/signin) and switch between the two forms using javascript. I was not sure which one was the best practice but I thought it was better to have a route for each form in order to easily share a specific link to the users.
 
-- **Backend**: NodeJS + ExpressJS + [Sequelize](https://sequelize.org/)
-- **Frontend**: Vue 2 + VueRouter + Vuex + Vue i18n + [Vuetify](https://vuetifyjs.com)
-
-## Exercice
-
-The purpose of the exercice is to extend the App with an alternative login method, using user's lastname and registration number to authenticate.
-The registration number is a 5 to 8 digits number which is not yet available in the app model
-TODO:
-
-- [ ] Add registration number field in user model (and update test data with some sample registration numbers to be able to test)
-- [ ] Add needed backend endpoint to login using lastname and registration number
-- [ ] Add a link at the bottom of the login form to switch to the alternative login method
-- [ ] Implement alternative login form
+- There are many deprecation warnings due to vuetify even with the latest version, I did not dig into it because I don't think it was the point of this exercise and it can be due to my local node version.
